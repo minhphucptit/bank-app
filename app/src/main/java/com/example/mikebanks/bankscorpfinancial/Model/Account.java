@@ -27,9 +27,7 @@ public class Account {
         this.dbID = dbID;
     }
 
-    /**
-     * Getters for the account name, number and balance
-     */
+
     public String getAccountName() {
         return accountName;
     }
@@ -66,7 +64,7 @@ public class Account {
     public void addDepositTransaction(double amount) {
         accountBalance += amount;
 
-        //TODO: Could be a better way - ie. each time a deposit is added, add it to the master count (global variable - persisted?)
+
         int depositsCount = 0;
 
         for (int i = 0; i < transactions.size(); i++) {
