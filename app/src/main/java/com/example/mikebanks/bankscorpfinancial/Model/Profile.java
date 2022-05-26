@@ -2,9 +2,6 @@ package com.example.mikebanks.bankscorpfinancial.Model;
 
 import java.util.ArrayList;
 
-/**
- * Created by mikebanks on 2017-12-05.
- */
 public class Profile {
 
     private String firstName;

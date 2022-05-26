@@ -59,10 +59,6 @@ public class AccountOverviewFragment extends Fragment {
 
     private Dialog accountDialog;
 
-    //TODO D1: Add functionality to remove accounts (note: ensure i remove from database as well (restructure db when removed)
-    //TODO D2: Add functionality to remove payees and profiles as well
-    //TODO D3: Add swiping functionality so that the user can swipe on the account to remove or see details
-
     private int selectedAccountIndex;
 
     public AccountOverviewFragment() {

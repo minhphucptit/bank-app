@@ -5,9 +5,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-/**
- * Created by mikebanks on 2018-01-04.
- */
 public class Transaction {
 
     public enum TRANSACTION_TYPE {
@@ -69,9 +66,6 @@ public class Transaction {
         this.dbId = dbId;
     }
 
-    /**
-     * getters used to access the private fields of the transaction
-     */
     public String getTransactionID() { return transactionID; }
     public String getTimestamp() { return timestamp; }
     public String getSendingAccount() {

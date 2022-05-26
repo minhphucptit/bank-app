@@ -72,13 +72,12 @@ public class LaunchActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         
         builder.setTitle("Help")
-                .setMessage("This Bank App Demo was made by Mike Banks. Soon, this dialog will give the user help, depending on where they are in the app");
+                .setMessage("This Bank App Demo was made by minhphucptit , any problem please contact nminhphuc99@gmail.com!");
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    //TODO: NOTE: This code can sometimes run multiple times if login is pressed quickly in succession
     public void login() {
         Intent intent = new Intent(getApplicationContext(), DrawerActivity.class);
         startActivity(intent);

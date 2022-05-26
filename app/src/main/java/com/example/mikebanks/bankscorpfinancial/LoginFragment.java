@@ -164,9 +164,6 @@ public class LoginFragment extends Fragment {
 
     }
 
-    /**
-     * method that creates an account
-     */
     private void createAccount() {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.login_frm_content, new CreateProfileFragment())

@@ -3,9 +3,6 @@ package com.example.mikebanks.bankscorpfinancial.Model;
 import java.util.ArrayList;
 import java.util.Locale;
 
-/**
- * Class used to create an account for the user
- */
 
 public class Account {
 

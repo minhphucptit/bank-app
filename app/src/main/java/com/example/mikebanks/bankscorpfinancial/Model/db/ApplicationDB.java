@@ -13,9 +13,6 @@ import com.example.mikebanks.bankscorpfinancial.Model.Transaction;
 
 import java.util.ArrayList;
 
-/**
- * Created by mikebanks on 2018-01-21.
- */
 
 public class ApplicationDB {
 

@@ -1,9 +1,5 @@
 package com.example.mikebanks.bankscorpfinancial.Model;
 
-/**
- * Created by mikebanks on 2018-01-04.
- */
-
 public class Payee {
 
     private String payeeID;
