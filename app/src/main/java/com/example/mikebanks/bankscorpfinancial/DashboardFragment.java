@@ -8,10 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.mikebanks.bankscorpfinancial.Model.Account;
 import com.example.mikebanks.bankscorpfinancial.Model.Profile;
 import com.example.mikebanks.bankscorpfinancial.Model.Transaction;
 import com.github.mikephil.charting.charts.PieChart;
@@ -24,6 +28,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -33,8 +38,13 @@ public class DashboardFragment extends Fragment {
 //    private TextView txtWelcome;
 //    private TextView txtMessage;
 //    private Button btnAddAccount;
+    private Spinner spnAccount;
+    private float deposit=0,transfer=0,payment=0;
 
     private Profile userProfile;
+    ArrayList<PieEntry> entries;
+    private ArrayList<Account> accounts;
+    private ArrayAdapter<Account> accountAdapter;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -51,34 +61,26 @@ public class DashboardFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_dashboard, container, false);
-
+        setupViews();
 //        imgTime = rootView.findViewById(R.id.img_time);
 //        txtWelcome = rootView.findViewById(R.id.txt_welcome);
 //        txtMessage = rootView.findViewById(R.id.txt_details_msg);
 //        btnAddAccount = rootView.findViewById(R.id.btn_add_account);
-        setupViews();
+        spnAccount = rootView.findViewById(R.id.spn_accounts1);
+        accounts = userProfile.getAccounts();
+        accountAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, accounts);
+        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        spnAccount.setAdapter(accountAdapter);
+
+
         PieChart pieChart = rootView.findViewById(R.id.any_chart_view);
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        float deposit =0,payment=0,transfer=0;
+        entries = new ArrayList<>();
 
-        for(int i=0;i<userProfile.getAccounts().size();i++){
-            for(int j=0;j<userProfile.getAccounts().get(i).getTransactions().size();j++){
-                Transaction transaction = userProfile.getAccounts().get(i).getTransactions().get(j);
-                if(transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT){
-                    payment++;
-                }else if(transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.TRANSFER){
-                    transfer++;
-                }else if(transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.DEPOSIT){
-                    deposit++;
-                }
-            }
-        }
+        setValueChart(0);
 
-        entries.add(new PieEntry(deposit,"DEPOSIT"));
-        entries.add(new PieEntry(payment,"PAYMENT"));
-        entries.add(new PieEntry(transfer,"TRANSFER"));
-
-        PieDataSet dataSet = new PieDataSet(entries,"TRANSACTIONS");
+        PieDataSet dataSet = new PieDataSet(entries,"");
         ArrayList<Integer> colors = new ArrayList<>();
         for(int color : ColorTemplate.MATERIAL_COLORS){
             colors.add(color);
@@ -89,19 +91,59 @@ public class DashboardFragment extends Fragment {
 
         dataSet.setColors(colors);
         dataSet.setDrawValues(true);
-//        dataSet.setValueFormatter(new PercentFormatter(pieChart));
+
         dataSet.setValueTextSize(20f);
         dataSet.setValueTextColor(Color.BLACK);
 
         PieData pieData = new PieData(dataSet);
         pieChart.setData(pieData);
-        pieChart.setCenterText("TEST");
-//        pieChart.setUsePercentValues(true);
+        pieChart.setCenterText("TRANSACTIONS");
         pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setEntryLabelTextSize(20f);
+        spnAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                setValueChart(i);
+                pieChart.notifyDataSetChanged();
+                pieChart.invalidate();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
         return rootView;
+
+    }
+
+    private void setValueChart(int i) {
+        payment=0;transfer=0;deposit=0;
+        entries.clear();
+
+        for (int j = 0; j < userProfile.getAccounts().get(i).getTransactions().size(); j++) {
+            Transaction transaction = userProfile.getAccounts().get(i).getTransactions().get(j);
+            if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
+                payment++;
+            } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
+                transfer++;
+            } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.DEPOSIT) {
+                deposit++;
+            }
+        }
+
+        if(deposit>0){
+            entries.add(new PieEntry(deposit,"DEPOSIT"));
+        }
+        if(payment>0){
+            entries.add(new PieEntry(payment,"PAYMENT"));
+        }
+        if(transfer>0){
+            entries.add(new PieEntry(transfer,"TRANSFER"));
+        }
+
 
     }
 
